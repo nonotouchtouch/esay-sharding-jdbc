@@ -1,0 +1,18 @@
+#这个文件对应的是sharding数据源，包含一个或多个真实数据源
+#真实数据源配置
+datasources: [easy_1]
+
+rules:
+  table_model_example:
+    strategy: MODEL
+    columm: prices
+    value: 2
+  datasources_precise_example:
+    strategy: PRECISE
+    columm: prices
+    value: easy_1
+
+table:
+  tbl_order:
+    dataSourcesShardingRuleNames: [datasources_precise_example]
+    tableShardingRuleNames: [model_rule_example]

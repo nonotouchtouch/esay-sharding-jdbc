@@ -1,4 +1,4 @@
-package com.hanming.easy.sharding.utils;
+package com.hanming.easy.sharding.common;
 
 import com.alibaba.druid.pool.DruidDataSource;
 

@@ -1,6 +1,6 @@
 package com.hanming.easy.sharding;
 
-import com.hanming.easy.sharding.utils.DataSourcesUtil;
+import com.hanming.easy.sharding.common.DataSourcesUtil;
 import org.junit.Test;
 
 import javax.sql.DataSource;
