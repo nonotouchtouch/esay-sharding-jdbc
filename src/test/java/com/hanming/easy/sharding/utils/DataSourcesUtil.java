@@ -1,4 +1,4 @@
-package com.hanming.easy.sharding;
+package com.hanming.easy.sharding.utils;
 
 import com.alibaba.druid.pool.DruidDataSource;
 
@@ -9,8 +9,10 @@ import java.util.Properties;
 
 /**
  * 获取dataSource
+ * @author hanming.xiao
+ * @date 2020-08-01
  */
-public class DataSourcesUtils {
+public class DataSourcesUtil {
 
     public static DataSource getDataSource(String fileName) throws IOException {
         //读取数据库配置信息文件
@@ -25,6 +27,7 @@ public class DataSourcesUtils {
         String user = (String) properties.get("user");
         String password = (String) properties.get("password");
 
+        //创建数据源
         DruidDataSource druidDataSource=new DruidDataSource();
         druidDataSource.setUsername(user);
         druidDataSource.setPassword(password);

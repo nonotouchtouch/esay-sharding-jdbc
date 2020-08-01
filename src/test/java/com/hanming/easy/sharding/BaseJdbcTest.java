@@ -1,30 +1,39 @@
 package com.hanming.easy.sharding;
 
+import com.hanming.easy.sharding.utils.DataSourcesUtil;
 import org.junit.Test;
-import java.io.IOException;
+
+import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.Date;
 
 /**
  * 一个基础的jdbc编程测试类
+ * 用于测试数据库链接是否正常
+ *
+ * @author hanming.xiao
+ * @date 2020-08-01
  */
-public class BaseTest {
+public class BaseJdbcTest {
 
     /**
-     * 数据源配置地址
+     * 数据源配置文件
      */
-    public static String DATA_SOURCES_CONF_FILE="dbconf/easy-sharding.properties";
-
+    public static String DATA_SOURCES_CONF_FILE = "dbconf/easy_0.properties";
 
     @Test
-    public void baseTest() throws IOException {
+    public void baseJdbcTest() {
 
+        DataSource dataSource;
         Connection conn = null;
         Statement stmt = null;
         try {
+            //获取数据源
+            dataSource = DataSourcesUtil.getDataSource(DATA_SOURCES_CONF_FILE);
+
             // 获取链接
-            conn =DataSourcesUtils.getDataSource(this.DATA_SOURCES_CONF_FILE).getConnection();
+            conn = dataSource.getConnection();
 
             // 创建statement
             stmt = conn.createStatement();
@@ -46,7 +55,7 @@ public class BaseTest {
                 BigDecimal price = rs.getBigDecimal("price");
 
                 // 输出数据
-                System.out.print("ID: " + id);
+                System.out.println("ID: " + id);
             }
             // 完成后关闭
             rs.close();
