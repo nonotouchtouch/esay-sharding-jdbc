@@ -5,9 +5,10 @@ import com.hanming.easy.sharding.config.ShardingDateSourcesConfig;
 import com.hanming.easy.sharding.config.Table;
 import com.hanming.easy.sharding.enums.StrategyEnum;
 
-import javax.sql.DataSource;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -19,19 +20,57 @@ import java.util.Map;
  */
 public class ShardingDateSourcesConfigLoader {
 
+
     public static final String DEFULT_PATH = "shardingconf/";
 
     /**
-     * 通过全路径解析
+     * 解析默认路径下所有配置
      *
-     * @param filePath
+     * @return sharding数据源配置 map
+     */
+    public static Map<String, ShardingDateSourcesConfig> loadAllByDefaultPath() throws ShardingException {
+        Map<String, ShardingDateSourcesConfig> map = new HashMap<>(16);
+        loadAllByPath(DEFULT_PATH, map);
+        return map;
+    }
+
+    /**
+     * 解析路径下所有文件
+     *
+     * @param path
+     * @param map
      * @return
      */
-    public static ShardingDateSourcesConfig loadSingleFileByPath(String filePath) throws IOException {
-        Map<String, Object> ymlMap = (Map<String, Object>) YamlLoader.loadYaml(filePath);
+    private static void loadAllByPath(String path, Map<String, ShardingDateSourcesConfig> map) throws ShardingException {
+        File file=new File(Constant.PROJECT_PATH+path);
 
+        if (file.isDirectory()) {
+            for (File subFile : file.listFiles()) {
+                loadAllByPath(path+subFile.getName(), map);
+            }
+        } else {
+            ShardingDateSourcesConfig shardingDateSourcesConfig = loadSingleFileByPath(path);
+            ShardingDateSourcesConfig alreadyExistConf = map.put(shardingDateSourcesConfig.getShardingDataSourcesName(), shardingDateSourcesConfig);
+            if (null!=alreadyExistConf){
+                throw new ShardingException(ShardingException.CONFIG_EXIST+alreadyExistConf.getShardingDataSourcesName());
+
+            }
+
+        }
+    }
+
+
+    /**
+     * 通过项目下路径解析
+     *
+     * @param filePath 相对路径
+     * @return
+     */
+    public static ShardingDateSourcesConfig loadSingleFileByPath(String filePath) throws ShardingException {
+        Map<String, Object> ymlMap = (Map<String, Object>) YamlLoader.loadYaml(filePath);
         return createShardingDateSourcesConfig(ymlMap);
     }
+
 
     /**
      * 通过yml解析器返回生成ShardingDateSourcesConfig
@@ -39,12 +78,16 @@ public class ShardingDateSourcesConfigLoader {
      * @param ymlMap
      * @return ShardingDateSourcesConfig
      */
-    private static ShardingDateSourcesConfig createShardingDateSourcesConfig(Map<String, Object> ymlMap) throws IOException {
+    private static ShardingDateSourcesConfig createShardingDateSourcesConfig(Map<String, Object> ymlMap) throws ShardingException {
         ShardingDateSourcesConfig shardingDateSourcesConfig = new ShardingDateSourcesConfig();
         shardingDateSourcesConfig.setShardingDataSourcesName((String) ymlMap.get("shardingDataSourcesName"));
         ArrayList<String> dataSources = (ArrayList<String>) ymlMap.get("datasources");
         for (String dataSource : dataSources) {
-            shardingDateSourcesConfig.getDataSourceMap().put(dataSource, DataSourcesUtil.getDataSourceFromDefaultPath(dataSource));
+            try {
+                shardingDateSourcesConfig.getDataSourceMap().put(dataSource, DataSourcesUtil.getDataSourceFromDefaultPath(dataSource));
+            } catch (IOException e) {
+                throw new ShardingException(ShardingException.DATA_SOURCE_FAIL+dataSource);
+            }
         }
         Map<String, Map> rules = (Map<String, Map>) ymlMap.get("rules");
         for (String ruleName : rules.keySet()) {
@@ -59,15 +102,6 @@ public class ShardingDateSourcesConfigLoader {
         }
 
         return shardingDateSourcesConfig;
-    }
-
-    /**
-     * 解析默认路径下所有配置
-     *
-     * @return
-     */
-    public static Map<String, ShardingDateSourcesConfig> loadAllByDefaultPath() {
-        return null;
     }
 
 }

@@ -11,5 +11,7 @@ public class ShardingException extends Exception {
         super(message);
     }
 
-    public static String CONFIG_EXIST="ShardingDateSourcesConfig配置key重复，已存在配置key：";
+    public static String CONFIG_EXIST="ShardingDateSourcesConfig配置key重复，已存在配置shardingDataSource:：";
+    public static String DATA_SOURCE_FAIL="创建真实DateSources失败，datasource：";
+
 }

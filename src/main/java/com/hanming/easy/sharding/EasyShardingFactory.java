@@ -4,8 +4,11 @@ package com.hanming.easy.sharding;
 
 import com.hanming.easy.sharding.config.Config;
 import com.hanming.easy.sharding.config.ShardingDateSourcesConfig;
+import org.apache.shardingsphere.api.config.sharding.ShardingRuleConfiguration;
+import org.apache.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -17,6 +20,20 @@ import java.util.Map;
 public class EasyShardingFactory implements EasySharding {
 
 
+    /**
+     * 根据配置生成sharding数据源(使用默认方式配置数据源)
+     * 分库情况下，把不同dataSources包装成一个sharding数据源
+     *
+     * @param shardingDataSourceName 配置的sharding数据源名称（yml中配置）
+     * @return DataSource sharding数据源
+     */
+    @Override
+    public DataSource createDataSource(String shardingDataSourceName) throws SQLException {
+        ShardingDateSourcesConfig stringShardingDateSourcesConfig = Config.getStringShardingDateSourcesConfig(shardingDataSourceName);
+
+        ShardingRuleConfiguration shardingRuleConfiguration=new ShardingRuleConfiguration();
+        return ShardingDataSourceFactory.createDataSource(stringShardingDateSourcesConfig.getDataSourceMap(),shardingRuleConfiguration,null);
+    }
 
 
 
@@ -34,19 +51,6 @@ public class EasyShardingFactory implements EasySharding {
         return null;
 }
 
-    /**
-     * 根据配置生成sharding数据源(使用默认方式配置数据源)
-     * 分库情况下，把不同dataSources包装成一个sharding数据源
-     *
-     * @param configFileName 配置文件名称
-     * @return DataSource sharding数据源
-     */
-    @Override
-    public DataSource createDataSource(String configFileName) {
-        ShardingDateSourcesConfig stringShardingDateSourcesConfig = Config.getStringShardingDateSourcesConfig(configFileName);
-
-        return null;
-    }
 
 
 }

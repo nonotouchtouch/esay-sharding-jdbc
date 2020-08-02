@@ -12,7 +12,7 @@ import java.util.Map;
 public class YamlLoader {
 
     /**
-     * 根据文件路径解析
+     * 根据文件路径解析（相对路径）
      * @param filePath
      * @return
      */

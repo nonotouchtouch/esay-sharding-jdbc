@@ -2,6 +2,9 @@ package com.hanming.easy.sharding.config;
 
 import com.hanming.easy.sharding.common.ShardingDateSourcesConfigLoader;
 import com.hanming.easy.sharding.common.ShardingException;
+
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,7 +19,12 @@ public class Config {
 
     static {
         //解析shardingconf目录下所有 yml配置
-        stringShardingDateSourcesConfigMap = ShardingDateSourcesConfigLoader.loadAllByDefaultPath();
+        try {
+            stringShardingDateSourcesConfigMap = ShardingDateSourcesConfigLoader.loadAllByDefaultPath();
+        } catch (ShardingException e) {
+            stringShardingDateSourcesConfigMap=new HashMap<>(16);
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -46,7 +54,7 @@ public class Config {
     public static void putShardingDateSourcesConfig(String ymlFileName, ShardingDateSourcesConfig shardingDateSourcesConfig) throws ShardingException {
         ShardingDateSourcesConfig rep = stringShardingDateSourcesConfigMap.put(ymlFileName, shardingDateSourcesConfig);
         if (null != rep) {
-            throw new ShardingException(ShardingException.CONFIG_EXIST + ymlFileName);
+            throw new ShardingException(ShardingException.CONFIG_EXIST + rep.getShardingDataSourcesName());
         }
     }
 }

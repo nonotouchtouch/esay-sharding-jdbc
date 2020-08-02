@@ -1,7 +1,6 @@
 package com.hanming.easy.sharding.common;
 
 
-
 import com.alibaba.druid.pool.DruidDataSource;
 
 import javax.sql.DataSource;

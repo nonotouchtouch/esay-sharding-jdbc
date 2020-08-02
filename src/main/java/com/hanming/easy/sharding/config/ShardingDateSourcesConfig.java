@@ -65,4 +65,14 @@ public class ShardingDateSourcesConfig {
     public void setTableMap(Map<String, Table> tableMap) {
         this.tableMap = tableMap;
     }
+
+    @Override
+    public String toString() {
+        return "ShardingDateSourcesConfig{" +
+                "shardingDataSourcesName='" + shardingDataSourcesName + '\'' +
+                ", dataSourceMap=" + dataSourceMap +
+                ", ruleMap=" + ruleMap +
+                ", tableMap=" + tableMap +
+                '}';
+    }
 }
