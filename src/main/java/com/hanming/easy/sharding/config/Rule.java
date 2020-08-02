@@ -11,6 +11,13 @@ import com.hanming.easy.sharding.enums.StrategyEnum;
  */
 public class Rule {
 
+    public Rule(String ruleName,StrategyEnum strategyEnum,String column,Object value){
+        this.ruleName=ruleName;
+        this.strategyEnum=strategyEnum;
+        this.column=column;
+        this.value=value;
+    }
+
     /**
      * 由用户自行命名
      * 单个yml文件中不应重复。用于路由时匹配sharding分片策略
@@ -31,7 +38,7 @@ public class Rule {
      * 策略配置
      * 一些分片策略要进行参数配置，例如分片策略是MODEL时，配置按多少取模
      */
-    private String value;
+    private Object value;
 
     public String getRuleName() {
         return ruleName;
@@ -57,11 +64,11 @@ public class Rule {
         this.column = column;
     }
 
-    public String getValue() {
+    public Object getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 

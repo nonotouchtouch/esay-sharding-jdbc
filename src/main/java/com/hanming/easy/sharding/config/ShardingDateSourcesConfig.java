@@ -1,6 +1,7 @@
 package com.hanming.easy.sharding.config;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,20 +14,33 @@ import java.util.Map;
 public class ShardingDateSourcesConfig {
 
     /**
+     * sharding数据源名称
+     */
+    private String shardingDataSourcesName;
+
+    /**
      * 基础数据源map
      * 不分库时候只有一个
      */
-    private Map<String, DataSource> dataSourceMap;
+    private Map<String, DataSource> dataSourceMap=new HashMap<>(16);
 
     /**
      * 规则配置
      */
-    private Map<String,Rule> ruleMap;
+    private Map<String,Rule> ruleMap=new HashMap<>(16);
 
     /**
      * 逻辑表配置
      */
-    private Map<String,Table> tableMap;
+    private Map<String,Table> tableMap=new HashMap<>(16);
+
+    public String getShardingDataSourcesName() {
+        return shardingDataSourcesName;
+    }
+
+    public void setShardingDataSourcesName(String shardingDataSourcesName) {
+        this.shardingDataSourcesName = shardingDataSourcesName;
+    }
 
     public Map<String, DataSource> getDataSourceMap() {
         return dataSourceMap;

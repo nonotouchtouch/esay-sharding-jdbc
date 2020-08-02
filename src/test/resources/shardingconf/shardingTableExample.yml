@@ -1,7 +1,13 @@
 #这个文件对应的是sharding数据源，包含一个或多个真实数据源
-#真实数据源配置
+#sharding数据源名称，不能重复
+shardingDataSourcesName: tableShardingDs
+
+#真实数据源配置，分库情况下配置多个
+#使用默认方式加载此文件时，数据源名称对应dbconf目录下的数据源文件
+#如果真实数据源通过编程方式传入(DataSource createDataSource(Map<String, DataSource> dataSourceMap, String configFileName);)，此项设置为[]
 datasources: [easy_1]
 
+#分库分表规则配置
 rules:
   table_model_example:
     strategy: MODEL
@@ -12,7 +18,8 @@ rules:
     columm: prices
     value: easy_1
 
-table:
+#逻辑表关联规则
+tables:
   tbl_order:
     dataSourcesShardingRuleNames: [datasources_precise_example]
     tableShardingRuleNames: [model_rule_example]

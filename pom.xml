@@ -17,7 +17,12 @@
             <artifactId>sharding-jdbc-core</artifactId>
             <version>4.1.1</version>
         </dependency>
-
+        <!-- yml解析-->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.25</version>
+        </dependency>
         <!--   mysql驱动 com.mysql.cj.jdbc.Driver-->
         <dependency>
             <groupId>mysql</groupId>
@@ -30,7 +35,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>1.1.20</version>
-            <scope>test</scope>
         </dependency>
         <!--  单元测试-->
         <dependency>

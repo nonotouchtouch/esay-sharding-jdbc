@@ -1,5 +1,6 @@
 package com.hanming.easy.sharding.config;
 
+
 import java.util.List;
 
 /**
@@ -7,6 +8,12 @@ import java.util.List;
  * 按照逻辑表进行配置，关联分库分表规则
  */
 public class Table {
+
+    public Table(String logicTableName, List<String> tableShardingRuleNames, List<String> dataSourcesShardingRuleNames) {
+        this.logicTableName = logicTableName;
+        this.tableShardingRuleNames = tableShardingRuleNames;
+        this.dataSourcesShardingRuleNames = dataSourcesShardingRuleNames;
+    }
 
     /**
      * 逻辑表名

@@ -1,8 +1,7 @@
 package com.hanming.easy.sharding.config;
 
+import com.hanming.easy.sharding.common.ShardingDateSourcesConfigLoader;
 import com.hanming.easy.sharding.common.ShardingException;
-
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,8 +15,8 @@ import java.util.Map;
 public class Config {
 
     static {
-        stringShardingDateSourcesConfigMap = new HashMap<>(16);
-        //解析shardingconf目录下所有 yml配置 TODO
+        //解析shardingconf目录下所有 yml配置
+        stringShardingDateSourcesConfigMap = ShardingDateSourcesConfigLoader.loadAllByDefaultPath();
     }
 
     /**
