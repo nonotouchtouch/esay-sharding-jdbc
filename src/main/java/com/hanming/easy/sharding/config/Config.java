@@ -38,21 +38,25 @@ public class Config {
     /**
      * 获取配置
      *
-     * @param key
-     * @return
+     * @param shardingDataSourcesName
+     * @return shardingDateSourcesConfig
      */
-    public static ShardingDateSourcesConfig getStringShardingDateSourcesConfig(String key) {
-        return stringShardingDateSourcesConfigMap.get(key);
+    public static ShardingDateSourcesConfig getStringShardingDateSourcesConfig(String shardingDataSourcesName) throws ShardingException {
+        ShardingDateSourcesConfig shardingDateSourcesConfig = stringShardingDateSourcesConfigMap.get(shardingDataSourcesName);
+        if (null != shardingDateSourcesConfig) {
+            throw new ShardingException(ShardingException.CONFIG_NOT_EXIST +shardingDataSourcesName);
+        }
+        return shardingDateSourcesConfig;
     }
 
     /**
      * 存入配置，查重
      *
-     * @param ymlFileName
+     * @param shardingDataSourcesName
      * @param shardingDateSourcesConfig
      */
-    public static void putShardingDateSourcesConfig(String ymlFileName, ShardingDateSourcesConfig shardingDateSourcesConfig) throws ShardingException {
-        ShardingDateSourcesConfig rep = stringShardingDateSourcesConfigMap.put(ymlFileName, shardingDateSourcesConfig);
+    public static void putShardingDateSourcesConfig(String shardingDataSourcesName, ShardingDateSourcesConfig shardingDateSourcesConfig) throws ShardingException {
+        ShardingDateSourcesConfig rep = stringShardingDateSourcesConfigMap.put(shardingDataSourcesName, shardingDateSourcesConfig);
         if (null != rep) {
             throw new ShardingException(ShardingException.CONFIG_EXIST + rep.getShardingDataSourcesName());
         }

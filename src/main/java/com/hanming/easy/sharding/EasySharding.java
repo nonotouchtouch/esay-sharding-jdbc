@@ -1,6 +1,8 @@
 package com.hanming.easy.sharding;
 
 
+import com.hanming.easy.sharding.common.ShardingException;
+
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.Map;
@@ -20,7 +22,7 @@ public interface EasySharding {
      * @param shardingDataSourceName 配置的sharding数据源名称（yml中配置）
      * @return DataSource sharding数据源
      */
-    DataSource createDataSource(String shardingDataSourceName) throws SQLException;
+    DataSource createDataSource(String shardingDataSourceName) throws SQLException, ShardingException;
 
 
     /**

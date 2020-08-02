@@ -3,6 +3,7 @@ package com.hanming.easy.sharding.config;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * 用于存放分库分表规则配置
@@ -33,6 +34,11 @@ public class ShardingDateSourcesConfig {
      * 逻辑表配置
      */
     private Map<String,Table> tableMap=new HashMap<>(16);
+
+    /**
+     * 其他配置
+     */
+    private Properties properties=null;
 
     public String getShardingDataSourcesName() {
         return shardingDataSourcesName;
@@ -66,6 +72,14 @@ public class ShardingDateSourcesConfig {
         this.tableMap = tableMap;
     }
 
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
+
     @Override
     public String toString() {
         return "ShardingDateSourcesConfig{" +
@@ -73,6 +87,7 @@ public class ShardingDateSourcesConfig {
                 ", dataSourceMap=" + dataSourceMap +
                 ", ruleMap=" + ruleMap +
                 ", tableMap=" + tableMap +
+                ", properties=" + properties +
                 '}';
     }
 }
