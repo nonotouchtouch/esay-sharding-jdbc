@@ -1,5 +1,9 @@
 package com.hanming.easy.sharding.enums;
 
+import com.hanming.easy.sharding.handler.ModelHandler;
+import com.hanming.easy.sharding.handler.PreciseHandler;
+import com.hanming.easy.sharding.handler.StrategyHandler;
+
 /**
  * sharding分片策略
  * 分库分表策略，由开发者定义
@@ -11,28 +15,30 @@ public enum StrategyEnum {
     /**
      * 取模
      */
-    MODEL("取模","${0..VALUE}"),
+    MODEL("取模",new ModelHandler()),
 
     /**
      * 精确匹配路由
      */
-    PRECISE_MATCH("精确匹配路由","${VALUE}"),
+    PRECISE_MATCH("精确匹配路由",new PreciseHandler()),
 
     /**
      * 精确指定路由
      */
-    PRECISE("精确指定路由","${VALUE}");
+    PRECISE_FIX("精确指定路由",null);
 
 
 
-    StrategyEnum(String desc,String exp){
+    StrategyEnum(String desc,StrategyHandler suffixationHandler){
         this.desc=desc;
-        this.exp=exp;
+        this.suffixationHandler=suffixationHandler;
     }
 
     private String desc;
 
-    private String exp;
+
+
+    private StrategyHandler suffixationHandler;
 
     public String getDesc() {
         return desc;
@@ -42,11 +48,11 @@ public enum StrategyEnum {
         this.desc = desc;
     }
 
-    public String getExp() {
-        return exp;
+    public StrategyHandler getSuffixationHandler() {
+        return suffixationHandler;
     }
 
-    public void setExp(String exp) {
-        this.exp = exp;
+    public void setSuffixationHandler(StrategyHandler suffixationHandler) {
+        this.suffixationHandler = suffixationHandler;
     }
 }

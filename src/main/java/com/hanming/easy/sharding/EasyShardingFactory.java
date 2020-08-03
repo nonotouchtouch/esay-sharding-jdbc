@@ -94,8 +94,6 @@ public class EasyShardingFactory implements EasySharding {
         //真实数据库名称生成前缀
         String dataSourcesStr= CommonUtil.getInLineStr(shardingDateSourcesConfig.getDataSourceMap());
 
-
-
         //每个表配置规则 tableRuleConfigs
         for (String tableName:shardingDateSourcesConfig.getTableMap().keySet()) {
             StringBuilder builder=new StringBuilder(dataSourcesStr).append(".").append(tableName);
@@ -115,7 +113,7 @@ public class EasyShardingFactory implements EasySharding {
                         //根据分表字段顺序拼接表名
                         column.append(rule.getColumn()).append(",");
                     }
-                    String exp=rule.getStrategyEnum().getExp().replace("VALUE",rule.getValue().toString());
+                    String exp=rule.getStrategyEnum().getSuffixationHandler().getExp(rule.getValue());
                     builder.append("_").append(exp);
                 }
 

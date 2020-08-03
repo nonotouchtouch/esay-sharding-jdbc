@@ -91,7 +91,7 @@ public class ShardingDateSourcesConfigLoader {
         }
         Map<String, Map> rules = (Map<String, Map>) ymlMap.get("rules");
         for (String ruleName : rules.keySet()) {
-            shardingDateSourcesConfig.getRuleMap().put(ruleName, new Rule(ruleName, StrategyEnum.valueOf((String) rules.get(ruleName).get("strategy")),
+            shardingDateSourcesConfig.getRuleMap().put(ruleName, new Rule(ruleName,(String) rules.get(ruleName).get("strategy"),
                     (String) rules.get(ruleName).get("columm"), rules.get(ruleName).get("value")));
         }
         Map<String, Map> tables = (Map<String, Map>) ymlMap.get("tables");

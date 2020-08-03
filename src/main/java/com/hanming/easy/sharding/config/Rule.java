@@ -11,9 +11,9 @@ import com.hanming.easy.sharding.enums.StrategyEnum;
  */
 public class Rule {
 
-    public Rule(String ruleName,StrategyEnum strategyEnum,String column,Object value){
+    public Rule(String ruleName,String strategyEnumStr,String column,Object value){
         this.ruleName=ruleName;
-        this.strategyEnum=strategyEnum;
+        this.strategyEnum=StrategyEnum.valueOf(strategyEnumStr);
         this.column=column;
         this.value=value;
     }

@@ -2,8 +2,6 @@ package com.hanming.easy.sharding.config;
 
 import com.hanming.easy.sharding.common.ShardingDateSourcesConfigLoader;
 import com.hanming.easy.sharding.common.ShardingException;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +41,7 @@ public class Config {
      */
     public static ShardingDateSourcesConfig getStringShardingDateSourcesConfig(String shardingDataSourcesName) throws ShardingException {
         ShardingDateSourcesConfig shardingDateSourcesConfig = stringShardingDateSourcesConfigMap.get(shardingDataSourcesName);
-        if (null != shardingDateSourcesConfig) {
+        if (null == shardingDateSourcesConfig) {
             throw new ShardingException(ShardingException.CONFIG_NOT_EXIST +shardingDataSourcesName);
         }
         return shardingDateSourcesConfig;

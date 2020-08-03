@@ -2,7 +2,7 @@ package com.hanming.easy.sharding.algorithm;
 
 import com.hanming.easy.sharding.config.Rule;
 import com.hanming.easy.sharding.config.ShardingDateSourcesConfig;
-import com.hanming.easy.sharding.handler.SuffixationHandler;
+import com.hanming.easy.sharding.handler.StrategyHandler;
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;
 
@@ -34,11 +34,12 @@ public class EasyPreciseShardingAlgorithm implements PreciseShardingAlgorithm {
         realTableNameSet.add(logicTableName);
 
         //待处理规则
-        List<String> ruleNameList= shardingDateSourcesConfig.getTableMap().get(logicTableName).getDataSourcesShardingRuleNames();
+        List<String> ruleNameList= shardingDateSourcesConfig.getTableMap().get(logicTableName).getTableShardingRuleNames();
 
         for (String ruleName:ruleNameList) {
             Rule rule=shardingDateSourcesConfig.getRuleMap().get(ruleName);
-            SuffixationHandler suffixationHandler=null;
+            StrategyHandler suffixationHandler=rule.getStrategyEnum().getSuffixationHandler();
+            realTableNameSet = suffixationHandler.generateSuffixation(realTableNameSet, rule, preciseShardingValue);
         }
 
 
