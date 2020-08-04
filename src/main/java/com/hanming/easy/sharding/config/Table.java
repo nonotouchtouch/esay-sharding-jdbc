@@ -1,15 +1,30 @@
 package com.hanming.easy.sharding.config;
 
 
+import com.alibaba.druid.util.StringUtils;
+
 import java.util.List;
 
 /**
  * 表信息配置
  * 按照逻辑表进行配置，关联分库分表规则
+ *
+ * @author hanming.xiao
+ * @date 2020-08-01
  */
 public class Table {
 
+    /**
+     * 构造方法判断合理性
+     *
+     * @param logicTableName
+     * @param tableShardingRuleNames
+     * @param dataSourcesShardingRuleNames
+     */
     public Table(String logicTableName, List<String> tableShardingRuleNames, List<String> dataSourcesShardingRuleNames) {
+        if (StringUtils.isEmpty(logicTableName)) {
+            throw new IllegalArgumentException("Create Table fail! LogicTableName can not be empty!");
+        }
         this.logicTableName = logicTableName;
         this.tableShardingRuleNames = tableShardingRuleNames;
         this.dataSourcesShardingRuleNames = dataSourcesShardingRuleNames;

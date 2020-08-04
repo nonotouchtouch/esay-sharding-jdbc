@@ -1,5 +1,7 @@
 package com.hanming.easy.sharding.config;
 
+import com.alibaba.druid.util.StringUtils;
+
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +15,18 @@ import java.util.Properties;
  *
  */
 public class ShardingDateSourcesConfig {
+
+    /**
+     * 构造方法 sharding数据源名称必传，且不同文件中不能重复
+     * @param shardingDataSourcesName
+     */
+    public ShardingDateSourcesConfig(String shardingDataSourcesName) {
+        if (StringUtils.isEmpty(shardingDataSourcesName)) {
+            throw new IllegalArgumentException("Create ShardingDateSourcesConfig fail! ShardingDataSourcesName can not be empty!");
+        }
+        this.shardingDataSourcesName=shardingDataSourcesName;
+
+    }
 
     /**
      * sharding数据源名称
@@ -39,6 +53,7 @@ public class ShardingDateSourcesConfig {
      * 其他配置
      */
     private Properties properties=null;
+
 
     public String getShardingDataSourcesName() {
         return shardingDataSourcesName;

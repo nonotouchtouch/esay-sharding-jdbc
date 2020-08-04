@@ -1,6 +1,8 @@
 package com.hanming.easy.sharding;
 
+import com.alibaba.druid.util.StringUtils;
 import com.hanming.easy.sharding.common.ShardingException;
+import com.hanming.easy.sharding.enums.StrategyEnum;
 import org.junit.Test;
 
 import javax.sql.DataSource;
@@ -13,6 +15,8 @@ import java.util.Date;
 
 /**
  * 分表测试
+ * @author hanming.xiao
+ * @date 2020-08-04
  */
 public class TableShardingTest {
 
@@ -22,13 +26,21 @@ public class TableShardingTest {
     public static String TABLE_SHARDING_CONFIG = "shardingTableExample.yml";
 
     /**
-     * 数据源配置文件
+     * sharding数据源名称（配置文件里配置的）
      */
     public static String SHARDING_DATASOURCE_CONFIG = "tableShardingDs";
 
+    /**
+     * 取模分表配置
+     * 根据price字段值，按规则配置中的value取模
+     * @throws ShardingException
+     * @throws SQLException
+     */
     @Test
     public void baseTest() throws ShardingException, SQLException {
+        //创建工厂
         EasySharding easySharding=new EasyShardingFactory();
+        //获取sharding数据源
         DataSource dataSource = easySharding.createDataSource(SHARDING_DATASOURCE_CONFIG);
         // 获取链接
         Connection conn = dataSource.getConnection();

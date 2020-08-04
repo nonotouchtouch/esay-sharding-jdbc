@@ -1,5 +1,6 @@
 package com.hanming.easy.sharding.config;
 
+import com.alibaba.druid.util.StringUtils;
 import com.hanming.easy.sharding.enums.StrategyEnum;
 
 /**
@@ -11,11 +12,26 @@ import com.hanming.easy.sharding.enums.StrategyEnum;
  */
 public class Rule {
 
-    public Rule(String ruleName,String strategyEnumStr,String column,Object value){
-        this.ruleName=ruleName;
-        this.strategyEnum=StrategyEnum.valueOf(strategyEnumStr);
-        this.column=column;
-        this.value=value;
+    /**
+     * 构造方法判断合法性，存在即合理
+     *
+     * @param ruleName        规则名称 每个配置文件中的规则唯一标识 非空
+     * @param strategyEnumStr 策略 需要能转化成枚举
+     * @param column
+     * @param value
+     */
+    public Rule(String ruleName, String strategyEnumStr, String column, Object value) {
+        if (StringUtils.isEmpty(ruleName) || StringUtils.isEmpty(column)) {
+            throw new IllegalArgumentException("Create Rule fail! RuleName or column can not be empty!");
+        }
+        try {
+            this.strategyEnum = StrategyEnum.valueOf(strategyEnumStr);
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException("Create Rule fail! Strategy can not be null! ");
+        }
+        this.ruleName = ruleName;
+        this.column = column;
+        this.value = value;
     }
 
     /**
@@ -76,7 +92,7 @@ public class Rule {
     public String toString() {
         return "Rule{" +
                 "ruleName='" + ruleName + '\'' +
-                ", strategyEnum=" + strategyEnum +
+                ", strategyEnum=" + strategyEnum.name() +
                 ", column='" + column + '\'' +
                 ", value='" + value + '\'' +
                 '}';

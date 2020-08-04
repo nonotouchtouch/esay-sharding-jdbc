@@ -3,7 +3,6 @@ package com.hanming.easy.sharding.common;
 import com.hanming.easy.sharding.config.Rule;
 import com.hanming.easy.sharding.config.ShardingDateSourcesConfig;
 import com.hanming.easy.sharding.config.Table;
-import com.hanming.easy.sharding.enums.StrategyEnum;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,9 +52,7 @@ public class ShardingDateSourcesConfigLoader {
             ShardingDateSourcesConfig alreadyExistConf = map.put(shardingDateSourcesConfig.getShardingDataSourcesName(), shardingDateSourcesConfig);
             if (null!=alreadyExistConf){
                 throw new ShardingException(ShardingException.CONFIG_EXIST+alreadyExistConf.getShardingDataSourcesName());
-
             }
-
         }
     }
 
@@ -64,7 +61,7 @@ public class ShardingDateSourcesConfigLoader {
      * 通过项目下路径解析
      *
      * @param filePath 相对路径
-     * @return
+     * @return ShardingDateSourcesConfig
      */
     public static ShardingDateSourcesConfig loadSingleFileByPath(String filePath) throws ShardingException {
         Map<String, Object> ymlMap = (Map<String, Object>) YamlLoader.loadYaml(filePath);
@@ -79,8 +76,9 @@ public class ShardingDateSourcesConfigLoader {
      * @return ShardingDateSourcesConfig
      */
     private static ShardingDateSourcesConfig createShardingDateSourcesConfig(Map<String, Object> ymlMap) throws ShardingException {
-        ShardingDateSourcesConfig shardingDateSourcesConfig = new ShardingDateSourcesConfig();
-        shardingDateSourcesConfig.setShardingDataSourcesName((String) ymlMap.get("shardingDataSourcesName"));
+        //创建ShardingDateSourcesConfig对象，每个对象对应一个sharding数据源（因为这个方法是yml解析调过来的，所以这里也对应一个yml文件）
+        ShardingDateSourcesConfig shardingDateSourcesConfig = new ShardingDateSourcesConfig((String) ymlMap.get("shardingDataSourcesName"));
+        //获取真实数据源列表
         ArrayList<String> dataSources = (ArrayList<String>) ymlMap.get("datasources");
         for (String dataSource : dataSources) {
             try {

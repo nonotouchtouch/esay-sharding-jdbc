@@ -41,7 +41,7 @@ public class EasyShardingFactory implements EasySharding {
         ShardingDateSourcesConfig shardingDateSourcesConfig = Config.getStringShardingDateSourcesConfig(shardingDataSourceName);
         //数据分片
         ShardingRuleConfiguration shardingRuleConfiguration=createFromShardingDateSourcesConfig(shardingDateSourcesConfig);
-        //使用sharding API获取sharding数据源
+        //使用shardingSphere API获取sharding数据源
         return ShardingDataSourceFactory.createDataSource(shardingDateSourcesConfig.getDataSourceMap(),shardingRuleConfiguration,shardingDateSourcesConfig.getProperties());
     }
 
@@ -96,6 +96,7 @@ public class EasyShardingFactory implements EasySharding {
 
         //每个表配置规则 tableRuleConfigs
         for (String tableName:shardingDateSourcesConfig.getTableMap().keySet()) {
+            //数据源+逻辑表名+后缀 例如：${0..1}.t_order${0..1}
             StringBuilder builder=new StringBuilder(dataSourcesStr).append(".").append(tableName);
 
             //逻辑表配置
@@ -104,8 +105,10 @@ public class EasyShardingFactory implements EasySharding {
             //所有分表字段
             StringBuilder column =new StringBuilder();
 
-            //使用的规则
+            //获取使用的规则
             List<String> ruleNames = table.getTableShardingRuleNames();
+
+            //遍历规则，拼接后缀
             if(null!=ruleNames && !ruleNames.isEmpty()){
                 for (String ruleName: ruleNames) {
                     Rule rule=shardingDateSourcesConfig.getRuleMap().get(ruleName);
