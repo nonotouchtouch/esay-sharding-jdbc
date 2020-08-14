@@ -40,7 +40,7 @@ public class BaseJdbcTest {
             String sql;
 
             //执行插入
-            sql = "insert into tbl_order (price) values (10)";
+            sql = "insert into tbl_order (price) values (180)";
             stmt.execute(sql);
 
             //执行选择

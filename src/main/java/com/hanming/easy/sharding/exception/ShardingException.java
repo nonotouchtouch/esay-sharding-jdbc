@@ -26,4 +26,9 @@ public class ShardingException extends Exception {
      */
     public static String CONFIG_EXIST="ShardingDateSourcesConfig already exist，sharding DataSourceName：";
 
+    /**
+     * 无真实数据源
+     */
+    public static String DATA_SOURCE_NOT_EXIST="DateSource does not exist，dataSourceName：";
+
 }

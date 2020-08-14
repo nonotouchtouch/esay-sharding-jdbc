@@ -1,7 +1,6 @@
 package com.hanming.easy.sharding;
 
 
-
 import com.hanming.easy.sharding.algorithm.EasyPreciseShardingAlgorithm;
 import com.hanming.easy.sharding.common.CommonUtil;
 import com.hanming.easy.sharding.exception.ShardingException;
@@ -18,6 +17,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 几种使用sharding的方式
@@ -27,6 +27,9 @@ import java.util.Map;
  */
 public class EasyShardingFactory {
 
+    private EasyShardingFactory(){
+
+    }
 
 
     /**
@@ -34,89 +37,116 @@ public class EasyShardingFactory {
      * 如果数据源配置方式和默认的不一样，手动传入基础数据源
      * 分库情况下，把不同dataSources包装成一个sharding数据源
      *
-     * @param dataSourceMap  数据源（分库的情况下有多个）
+     * @param dataSourceMap          数据源（分库的情况下有多个）
      * @param shardingDataSourceName 配置sharding数据源名称（配置文件里配置）
      * @return DataSource sharding数据源
      */
-    public DataSource createDataSource(Map<String, DataSource> dataSourceMap, String shardingDataSourceName) throws ShardingException, SQLException {
+    public static DataSource createDataSource(Map<String, DataSource> dataSourceMap, String shardingDataSourceName) throws ShardingException, SQLException {
         //获取yml配置
         ShardingDateSourcesConfig shardingDateSourcesConfig = Config.getStringShardingDateSourcesConfig(shardingDataSourceName);
+        //检查配置的真实数据源是否齐全
+        checkDataSourceMap(dataSourceMap, shardingDateSourcesConfig);
         //数据分片
-        ShardingRuleConfiguration shardingRuleConfiguration=createFromShardingDateSourcesConfig(shardingDateSourcesConfig);
+        ShardingRuleConfiguration shardingRuleConfiguration = createFromShardingDateSourcesConfig(shardingDateSourcesConfig);
         //使用shardingSphere API获取sharding数据源
-        return ShardingDataSourceFactory.createDataSource(dataSourceMap,shardingRuleConfiguration,shardingDateSourcesConfig.getProperties());}
+        return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration, shardingDateSourcesConfig.getProperties());
+    }
+
+    /**
+     * 检查真实数据源
+     *
+     * @param dataSourceMap
+     * @param shardingDateSourcesConfig
+     */
+    private static void checkDataSourceMap(Map<String, DataSource> dataSourceMap, ShardingDateSourcesConfig shardingDateSourcesConfig) throws ShardingException {
+        if (null == dataSourceMap || dataSourceMap.isEmpty()) {
+            throw new ShardingException(ShardingException.DATA_SOURCE_NOT_EXIST+"dataSourceMap is empty!");
+        }
+
+        Set<String> dataSourcesNames = shardingDateSourcesConfig.getDataSourcesNames();
+        for (String dataSourceName : dataSourcesNames) {
+            DataSource dataSource = dataSourceMap.get(dataSourceName);
+            if(null==dataSource){
+                throw new ShardingException(ShardingException.DATA_SOURCE_NOT_EXIST+dataSourceName);
+            }
+
+        }
+
+    }
 
 
     /**
      * 根据yml配置转换成sharding-jdbc的配置
      * 官方文档说明
      * https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-jdbc/configuration/java-api/sharding/
+     *
      * @param shardingDateSourcesConfig
      * @return
      */
-    private ShardingRuleConfiguration createFromShardingDateSourcesConfig(ShardingDateSourcesConfig shardingDateSourcesConfig) {
-        ShardingRuleConfiguration shardingRuleConfiguration=new ShardingRuleConfiguration();
+    private static ShardingRuleConfiguration createFromShardingDateSourcesConfig(ShardingDateSourcesConfig shardingDateSourcesConfig) {
+        ShardingRuleConfiguration shardingRuleConfiguration = new ShardingRuleConfiguration();
         //分片表规则列表
-        createTableRuleConfigs(shardingRuleConfiguration,shardingDateSourcesConfig);
+        createTableRuleConfigs(shardingRuleConfiguration, shardingDateSourcesConfig);
         //其他配置
         return shardingRuleConfiguration;
     }
 
     /**
      * 分片表规则列表
-     *      Collection<TableRuleConfiguration> tableRuleConfigs = new LinkedList();
-     *      Collection<String> bindingTableGroups = new LinkedList();
-     *      Collection<String> broadcastTables = new LinkedList();
-     *      String defaultDataSourceName;
-     *      ShardingStrategyConfiguration defaultDatabaseShardingStrategyConfig;
-     *      ShardingStrategyConfiguration defaultTableShardingStrategyConfig;
-     *      KeyGeneratorConfiguration defaultKeyGeneratorConfig;
-     *      Collection<MasterSlaveRuleConfiguration> masterSlaveRuleConfigs = new LinkedList();
-     *      EncryptRuleConfiguration encryptRuleConfig;
+     * Collection<TableRuleConfiguration> tableRuleConfigs = new LinkedList();
+     * Collection<String> bindingTableGroups = new LinkedList();
+     * Collection<String> broadcastTables = new LinkedList();
+     * String defaultDataSourceName;
+     * ShardingStrategyConfiguration defaultDatabaseShardingStrategyConfig;
+     * ShardingStrategyConfiguration defaultTableShardingStrategyConfig;
+     * KeyGeneratorConfiguration defaultKeyGeneratorConfig;
+     * Collection<MasterSlaveRuleConfiguration> masterSlaveRuleConfigs = new LinkedList();
+     * EncryptRuleConfiguration encryptRuleConfig;
+     *
      * @param shardingRuleConfiguration
      * @param shardingDateSourcesConfig
      */
-    private void createTableRuleConfigs(ShardingRuleConfiguration shardingRuleConfiguration, ShardingDateSourcesConfig shardingDateSourcesConfig) {
+    private static void createTableRuleConfigs(ShardingRuleConfiguration shardingRuleConfiguration, ShardingDateSourcesConfig shardingDateSourcesConfig) {
         //真实数据库名称生成前缀
-        String dataSourcesStr= CommonUtil.getInLineStr(shardingDateSourcesConfig.getDataSourcesNames());
+        String dataSourcesStr = CommonUtil.getInLineStr(shardingDateSourcesConfig.getDataSourcesNames());
 
         //每个表配置规则 tableRuleConfigs
-        for (String tableName:shardingDateSourcesConfig.getTableMap().keySet()) {
+        for (String tableName : shardingDateSourcesConfig.getTableMap().keySet()) {
             //数据源+逻辑表名+后缀 例如：${0..1}.t_order${0..1}
-            StringBuilder builder=new StringBuilder(dataSourcesStr).append(".").append(tableName);
+            StringBuilder builder = new StringBuilder(dataSourcesStr).append(".").append(tableName);
 
             //逻辑表配置
             Table table = shardingDateSourcesConfig.getTableMap().get(tableName);
 
             //所有分表字段
-            StringBuilder column =new StringBuilder();
+            StringBuilder column = new StringBuilder();
 
             //获取使用的规则
             List<String> ruleNames = table.getTableShardingRuleNames();
 
             //遍历规则，拼接后缀
-            if(null!=ruleNames && !ruleNames.isEmpty()){
-                for (String ruleName: ruleNames) {
-                    Rule rule=shardingDateSourcesConfig.getRuleMap().get(ruleName);
-                    if(null!=rule.getColumn()&&!"".equals(rule.getColumn().trim())){
+            if (null != ruleNames && !ruleNames.isEmpty()) {
+                for (String ruleName : ruleNames) {
+                    Rule rule = shardingDateSourcesConfig.getRuleMap().get(ruleName);
+                    if (null != rule.getColumn() && !"".equals(rule.getColumn().trim())) {
                         //根据分表字段顺序拼接表名
                         column.append(rule.getColumn()).append(",");
                     }
-                    String exp=rule.getStrategyEnum().getSuffixationHandler().getExp(rule.getValue());
+                    String exp = rule.getStrategyEnum().getSuffixationHandler().getExp(rule.getValue());
                     builder.append("_").append(exp);
                 }
 
             }
 
-            TableRuleConfiguration tableRuleConfiguration=new TableRuleConfiguration(tableName,builder.toString());
+            TableRuleConfiguration tableRuleConfiguration = new TableRuleConfiguration(tableName, builder.toString());
 
-            String columnStr=column.substring(0,column.length()-2);
-            if(null!=table.getTableShardingRuleNames()) {
-                if (1 == table.getTableShardingRuleNames().size()){
+            String columnStr = column.substring(0, column.length() - 2);
+            if (null != table.getTableShardingRuleNames()) {
+                if (1 == table.getTableShardingRuleNames().size()) {
                     tableRuleConfiguration.setTableShardingStrategyConfig(
-                            new StandardShardingStrategyConfiguration(columnStr,new EasyPreciseShardingAlgorithm(shardingDateSourcesConfig)));
+                            new StandardShardingStrategyConfiguration(columnStr, new EasyPreciseShardingAlgorithm(shardingDateSourcesConfig)));
 
-                }else {
+                } else {
                     //tableRuleConfiguration.setTableShardingStrategyConfig(new ComplexShardingStrategyConfiguration(columnStr,new ComplexKeysShardingAlgorithm()));
                 }
             }

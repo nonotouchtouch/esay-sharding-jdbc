@@ -1,15 +1,19 @@
 package com.hanming.easy.sharding;
 
+import com.hanming.easy.sharding.common.DataSourcesUtil;
 import com.hanming.easy.sharding.exception.ShardingException;
 import org.junit.Test;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 分表测试
@@ -18,10 +22,7 @@ import java.util.Date;
  */
 public class TableShardingTest {
 
-    /**
-     * 数据源配置文件
-     */
-    public static String TABLE_SHARDING_CONFIG = "shardingTableExample.yml";
+
 
     /**
      * sharding数据源名称（配置文件里配置的）
@@ -35,11 +36,13 @@ public class TableShardingTest {
      * @throws SQLException
      */
     @Test
-    public void baseTest() throws ShardingException, SQLException {
+    public void baseTest() throws ShardingException, SQLException, IOException {
+
+        Map<String, DataSource> dataSourceMap=new HashMap<>();
+        dataSourceMap.put("easy_1", DataSourcesUtil.getDataSource("dbconf/easy_1.properties"));
         //创建工厂
-        EasyShardingFactory easySharding=new EasyShardingFactory();
+        DataSource dataSource = EasyShardingFactory.createDataSource(dataSourceMap, SHARDING_DATASOURCE_CONFIG);
         //获取sharding数据源
-        DataSource dataSource = easySharding.createDataSource(null,SHARDING_DATASOURCE_CONFIG);
         // 获取链接
         Connection conn = dataSource.getConnection();
 
@@ -48,7 +51,7 @@ public class TableShardingTest {
         String sql;
 
         //执行插入
-        sql = "insert into tbl_order (price) values (101)";
+        sql = "insert into tbl_order (price) values (1013)";
         stmt.execute(sql);
 
         //执行选择

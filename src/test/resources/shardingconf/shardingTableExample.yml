@@ -3,8 +3,7 @@
 shardingDataSourcesName: tableShardingDs
 
 #真实数据源配置，分库情况下配置多个
-#使用默认方式加载此文件时，数据源名称对应dbconf目录下的数据源文件
-#如果真实数据源通过编程方式传入(DataSource createDataSource(Map<String, DataSource> dataSourceMap, String configFileName);)，此项设置为[]
+#真实数据源通过编程方式传入(DataSource createDataSource(Map<String, DataSource> dataSourceMap, String configFileName);)，此项设置为key
 datasources: [easy_1]
 
 #分库分表规则配置
