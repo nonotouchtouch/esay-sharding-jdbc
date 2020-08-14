@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * 存放所有sharding配置
- * 1.提前解析配置的yml文件
+ * 1.提前解析默认路径下配置的yml文件
  * 2.也可手动传入ShardingDateSourcesConfig对象
  *
  * @author hanming.xiao
@@ -26,8 +26,8 @@ public class Config {
     }
 
     /**
-     * yml配置
-     * key：文件名
+     * sharding数据源配置
+     * key：sharding数据源名称
      * vale：配置内容
      */
     private static Map<String, ShardingDateSourcesConfig> stringShardingDateSourcesConfigMap;
@@ -36,8 +36,9 @@ public class Config {
     /**
      * 获取配置
      *
-     * @param shardingDataSourcesName
-     * @return shardingDateSourcesConfig
+     * @param shardingDataSourcesName sharding数据源名称
+     * @return shardingDateSourcesConfig 分库分表配置
+     * @throws ShardingException 配置不存在
      */
     public static ShardingDateSourcesConfig getStringShardingDateSourcesConfig(String shardingDataSourcesName) throws ShardingException {
         ShardingDateSourcesConfig shardingDateSourcesConfig = stringShardingDateSourcesConfigMap.get(shardingDataSourcesName);
@@ -50,8 +51,9 @@ public class Config {
     /**
      * 存入配置，查重
      *
-     * @param shardingDataSourcesName
-     * @param shardingDateSourcesConfig
+     * @param shardingDataSourcesName sharding数据源名称（不能重复）
+     * @param shardingDateSourcesConfig sharding数据源配置
+     * @throws ShardingException 配置已存在
      */
     public static void putShardingDateSourcesConfig(String shardingDataSourcesName, ShardingDateSourcesConfig shardingDateSourcesConfig) throws ShardingException {
         ShardingDateSourcesConfig rep = stringShardingDateSourcesConfigMap.put(shardingDataSourcesName, shardingDateSourcesConfig);

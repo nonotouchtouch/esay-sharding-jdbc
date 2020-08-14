@@ -39,6 +39,7 @@ public class ShardingDateSourcesConfigLoader {
      * @param path
      * @param map
      * @return
+     * @throws ShardingException sharding数据源名称配置重复
      */
     private static void loadAllByPath(String path, Map<String, ShardingDateSourcesConfig> map) throws ShardingException {
         File file=new File(Constant.PROJECT_PATH+path);

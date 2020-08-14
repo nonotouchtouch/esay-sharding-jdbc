@@ -1,8 +1,6 @@
 package com.hanming.easy.sharding;
 
-import com.alibaba.druid.util.StringUtils;
 import com.hanming.easy.sharding.common.ShardingException;
-import com.hanming.easy.sharding.enums.StrategyEnum;
 import org.junit.Test;
 
 import javax.sql.DataSource;

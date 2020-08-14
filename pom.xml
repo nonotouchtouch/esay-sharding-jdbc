@@ -30,7 +30,7 @@
             <version>8.0.18</version>
             <scope>test</scope>
         </dependency>
-        <!-- 德鲁伊连接池-->
+        <!-- 德鲁伊连接池，TODO 冲突了就自己排掉-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>

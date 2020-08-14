@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
+ * easy-sharding配置
+ *
  * 用于存放分库分表规则配置
  * 每个对象对应一个sharding yml配置文件
  * @author hanming.xiao

@@ -52,11 +52,11 @@ public class EasyShardingFactory implements EasySharding {
      * 分库情况下，把不同dataSources包装成一个sharding数据源
      *
      * @param dataSourceMap  数据源（分库的情况下有多个）
-     * @param configFileName 配置文件名称，配置文件需放在默认目录下
+     * @param shardingDataSourceName 配置sharding数据源名称（配置文件里配置）
      * @return DataSource sharding数据源
      */
     @Override
-    public DataSource createDataSource(Map<String, DataSource> dataSourceMap, String configFileName) {
+    public DataSource createDataSource(Map<String, DataSource> dataSourceMap, String shardingDataSourceName) {
         return null;
 }
 
