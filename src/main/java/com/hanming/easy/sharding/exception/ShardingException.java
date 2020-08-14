@@ -1,4 +1,4 @@
-package com.hanming.easy.sharding.common;
+package com.hanming.easy.sharding.exception;
 
 /**
  * 自定义异常
@@ -11,8 +11,19 @@ public class ShardingException extends Exception {
         super(message);
     }
 
+    /**
+     * 文件不存在
+     */
     public static String FILE_NOT_EXIST="File does not exist，path：";
+
+    /**
+     * 配置不存在
+     */
     public static String CONFIG_NOT_EXIST="ShardingDateSourcesConfig does not exist，sharding DataSourceName：";
+
+    /**
+     * 配置已存在
+     */
     public static String CONFIG_EXIST="ShardingDateSourcesConfig already exist，sharding DataSourceName：";
 
 }

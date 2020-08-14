@@ -1,6 +1,7 @@
 package com.hanming.easy.sharding.common;
 
 import com.hanming.easy.sharding.config.ShardingDateSourcesConfig;
+import com.hanming.easy.sharding.exception.ShardingException;
 import org.junit.Test;
 
 import java.util.HashMap;

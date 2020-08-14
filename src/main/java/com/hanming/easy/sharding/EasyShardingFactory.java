@@ -4,7 +4,7 @@ package com.hanming.easy.sharding;
 
 import com.hanming.easy.sharding.algorithm.EasyPreciseShardingAlgorithm;
 import com.hanming.easy.sharding.common.CommonUtil;
-import com.hanming.easy.sharding.common.ShardingException;
+import com.hanming.easy.sharding.exception.ShardingException;
 import com.hanming.easy.sharding.config.Config;
 import com.hanming.easy.sharding.config.Rule;
 import com.hanming.easy.sharding.config.ShardingDateSourcesConfig;

@@ -3,6 +3,7 @@ package com.hanming.easy.sharding.common;
 import com.hanming.easy.sharding.config.Rule;
 import com.hanming.easy.sharding.config.ShardingDateSourcesConfig;
 import com.hanming.easy.sharding.config.Table;
+import com.hanming.easy.sharding.exception.ShardingException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -76,9 +77,6 @@ public class ShardingDateSourcesConfigLoader {
      * @return ShardingDateSourcesConfig
      */
     public static ShardingDateSourcesConfig loadSingleFileByPath(String filePath) throws ShardingException {
-        if (null == filePath) {
-            throw new ShardingException(ShardingException.FILE_NOT_EXIST + " null");
-        }
         Map<String, Object> ymlMap = YamlLoader.loadYaml(filePath);
         return createShardingDateSourcesConfig(ymlMap);
     }
