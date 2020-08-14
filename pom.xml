@@ -23,6 +23,9 @@
             <artifactId>snakeyaml</artifactId>
             <version>1.25</version>
         </dependency>
+
+
+
         <!--   mysql驱动 com.mysql.cj.jdbc.Driver-->
         <dependency>
             <groupId>mysql</groupId>
@@ -30,11 +33,12 @@
             <version>8.0.18</version>
             <scope>test</scope>
         </dependency>
-        <!-- 德鲁伊连接池，TODO 冲突了就自己排掉-->
+        <!-- 德鲁伊连接池-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>1.1.20</version>
+            <scope>test</scope>
         </dependency>
         <!--  单元测试-->
         <dependency>

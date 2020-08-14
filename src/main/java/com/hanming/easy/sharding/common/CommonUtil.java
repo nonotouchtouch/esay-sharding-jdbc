@@ -1,7 +1,6 @@
 package com.hanming.easy.sharding.common;
 
-import javax.sql.DataSource;
-import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -10,12 +9,12 @@ public class CommonUtil {
 
     /**
      * 根据yml配置生成sharding原生配置
-     * @param dataSourceMap
+     * @param dataSourceNames
      * @return
      */
-    public static String getInLineStr(Map<String, DataSource> dataSourceMap) {
+    public static String getInLineStr(Set<String> dataSourceNames) {
         StringBuffer stringBuffer=new StringBuffer("${[");
-        for (String dataSourcesName:dataSourceMap.keySet()) {
+        for (String dataSourcesName:dataSourceNames) {
             stringBuffer.append("'").append(dataSourcesName).append("',");
         }
         String str=stringBuffer.substring(0,stringBuffer.length()-1);

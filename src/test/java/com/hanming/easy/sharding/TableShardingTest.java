@@ -37,9 +37,9 @@ public class TableShardingTest {
     @Test
     public void baseTest() throws ShardingException, SQLException {
         //创建工厂
-        EasySharding easySharding=new EasyShardingFactory();
+        EasyShardingFactory easySharding=new EasyShardingFactory();
         //获取sharding数据源
-        DataSource dataSource = easySharding.createDataSource(SHARDING_DATASOURCE_CONFIG);
+        DataSource dataSource = easySharding.createDataSource(null,SHARDING_DATASOURCE_CONFIG);
         // 获取链接
         Connection conn = dataSource.getConnection();
 

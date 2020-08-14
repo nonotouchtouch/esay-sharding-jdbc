@@ -25,25 +25,8 @@ import java.util.Map;
  * @author hanming.xiao
  * @date 2020-08-01
  */
-public class EasyShardingFactory implements EasySharding {
+public class EasyShardingFactory {
 
-
-    /**
-     * 根据配置生成sharding数据源(使用默认方式配置数据源)
-     * 分库情况下，把不同dataSources包装成一个sharding数据源
-     *
-     * @param shardingDataSourceName 配置的sharding数据源名称（yml中配置）
-     * @return DataSource sharding数据源
-     */
-    @Override
-    public DataSource createDataSource(String shardingDataSourceName) throws SQLException, ShardingException {
-        //获取yml配置
-        ShardingDateSourcesConfig shardingDateSourcesConfig = Config.getStringShardingDateSourcesConfig(shardingDataSourceName);
-        //数据分片
-        ShardingRuleConfiguration shardingRuleConfiguration=createFromShardingDateSourcesConfig(shardingDateSourcesConfig);
-        //使用shardingSphere API获取sharding数据源
-        return ShardingDataSourceFactory.createDataSource(shardingDateSourcesConfig.getDataSourceMap(),shardingRuleConfiguration,shardingDateSourcesConfig.getProperties());
-    }
 
 
     /**
@@ -55,10 +38,13 @@ public class EasyShardingFactory implements EasySharding {
      * @param shardingDataSourceName 配置sharding数据源名称（配置文件里配置）
      * @return DataSource sharding数据源
      */
-    @Override
-    public DataSource createDataSource(Map<String, DataSource> dataSourceMap, String shardingDataSourceName) {
-        return null;
-}
+    public DataSource createDataSource(Map<String, DataSource> dataSourceMap, String shardingDataSourceName) throws ShardingException, SQLException {
+        //获取yml配置
+        ShardingDateSourcesConfig shardingDateSourcesConfig = Config.getStringShardingDateSourcesConfig(shardingDataSourceName);
+        //数据分片
+        ShardingRuleConfiguration shardingRuleConfiguration=createFromShardingDateSourcesConfig(shardingDateSourcesConfig);
+        //使用shardingSphere API获取sharding数据源
+        return ShardingDataSourceFactory.createDataSource(dataSourceMap,shardingRuleConfiguration,shardingDateSourcesConfig.getProperties());}
 
 
     /**
@@ -92,7 +78,7 @@ public class EasyShardingFactory implements EasySharding {
      */
     private void createTableRuleConfigs(ShardingRuleConfiguration shardingRuleConfiguration, ShardingDateSourcesConfig shardingDateSourcesConfig) {
         //真实数据库名称生成前缀
-        String dataSourcesStr= CommonUtil.getInLineStr(shardingDateSourcesConfig.getDataSourceMap());
+        String dataSourcesStr= CommonUtil.getInLineStr(shardingDateSourcesConfig.getDataSourcesNames());
 
         //每个表配置规则 tableRuleConfigs
         for (String tableName:shardingDateSourcesConfig.getTableMap().keySet()) {

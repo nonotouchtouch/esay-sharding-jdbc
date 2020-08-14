@@ -1,8 +1,6 @@
 package com.hanming.easy.sharding.config;
 
 
-import com.alibaba.druid.util.StringUtils;
-
 import java.util.List;
 
 /**
@@ -22,7 +20,7 @@ public class Table {
      * @param dataSourcesShardingRuleNames
      */
     public Table(String logicTableName, List<String> tableShardingRuleNames, List<String> dataSourcesShardingRuleNames) {
-        if (StringUtils.isEmpty(logicTableName)) {
+        if (null == logicTableName || logicTableName.trim().length() == 0) {
             throw new IllegalArgumentException("Create Table fail! LogicTableName can not be empty!");
         }
         this.logicTableName = logicTableName;

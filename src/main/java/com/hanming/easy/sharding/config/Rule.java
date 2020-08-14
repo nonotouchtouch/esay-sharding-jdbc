@@ -1,6 +1,5 @@
 package com.hanming.easy.sharding.config;
 
-import com.alibaba.druid.util.StringUtils;
 import com.hanming.easy.sharding.enums.StrategyEnum;
 
 /**
@@ -21,7 +20,7 @@ public class Rule {
      * @param value
      */
     public Rule(String ruleName, String strategyEnumStr, String column, Object value) {
-        if (StringUtils.isEmpty(ruleName) || StringUtils.isEmpty(column)) {
+        if (null == ruleName || ruleName.trim().length() == 0 || null == column || column.trim().length() == 0) {
             throw new IllegalArgumentException("Create Rule fail! RuleName or column can not be empty!");
         }
         try {
