@@ -34,17 +34,25 @@ public class ShardingDateSourcesConfigLoaderTest {
         System.out.println(stringShardingDateSourcesConfigMap);
     }
 
+    /**
+     * 解析指定路径下文件
+     * @throws ShardingException
+     */
     @Test
     public void baseTest2() throws ShardingException {
         Map map=new HashMap();
-        ShardingDateSourcesConfigLoader.loadAllByPath(null,map);
+        ShardingDateSourcesConfigLoader.loadAllByPath(ShardingDateSourcesConfigLoader.DEFULT_PATH,map);
         System.out.println(map);
     }
 
 
+    /**
+     * 按路径解析单个文件
+     * @throws ShardingException
+     */
     @Test
     public void baseTest3() throws ShardingException {
-        ShardingDateSourcesConfig shardingDateSourcesConfig = ShardingDateSourcesConfigLoader.loadSingleFileByPath(ShardingDateSourcesConfigLoader.DEFULT_PATH+"shardingTableExample.yml");
+        ShardingDateSourcesConfig shardingDateSourcesConfig = ShardingDateSourcesConfigLoader.loadSingleFileByPath(ShardingDateSourcesConfigLoader.DEFULT_PATH+"/shardingTableExample.yml");
         System.out.println(shardingDateSourcesConfig);
     }
 
