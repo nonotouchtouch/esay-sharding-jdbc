@@ -40,7 +40,7 @@ public class TableShardingTest {
 
         Map<String, DataSource> dataSourceMap=new HashMap<>();
         dataSourceMap.put("easy_1", DataSourcesUtil.getDataSource("dbconf/easy_1.properties"));
-        //创建工厂
+        //获取sharding数据源
         DataSource dataSource = EasyShardingFactory.createDataSource(dataSourceMap, SHARDING_DATASOURCE_CONFIG);
         //获取sharding数据源
         // 获取链接
@@ -51,7 +51,7 @@ public class TableShardingTest {
         String sql;
 
         //执行插入
-        sql = "insert into tbl_order (price) values (1013)";
+        sql = "insert into tbl_order (price) values (1013),(12)";
         stmt.execute(sql);
 
         //执行选择

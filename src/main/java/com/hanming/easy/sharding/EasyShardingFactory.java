@@ -2,6 +2,7 @@ package com.hanming.easy.sharding;
 
 
 import com.hanming.easy.sharding.algorithm.EasyPreciseShardingAlgorithm;
+import com.hanming.easy.sharding.algorithm.EasyRangeShardingAlgorithm;
 import com.hanming.easy.sharding.common.CommonUtil;
 import com.hanming.easy.sharding.exception.ShardingException;
 import com.hanming.easy.sharding.config.Config;
@@ -144,7 +145,7 @@ public class EasyShardingFactory {
             if (null != table.getTableShardingRuleNames()) {
                 if (1 == table.getTableShardingRuleNames().size()) {
                     tableRuleConfiguration.setTableShardingStrategyConfig(
-                            new StandardShardingStrategyConfiguration(columnStr, new EasyPreciseShardingAlgorithm(shardingDateSourcesConfig)));
+                            new StandardShardingStrategyConfiguration(columnStr, new EasyPreciseShardingAlgorithm(shardingDateSourcesConfig),new EasyRangeShardingAlgorithm(shardingDateSourcesConfig)));
 
                 } else {
                     //tableRuleConfiguration.setTableShardingStrategyConfig(new ComplexShardingStrategyConfiguration(columnStr,new ComplexKeysShardingAlgorithm()));
