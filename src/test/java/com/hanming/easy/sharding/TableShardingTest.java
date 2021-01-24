@@ -3,7 +3,6 @@ package com.hanming.easy.sharding;
 import com.hanming.easy.sharding.common.DataSourcesUtil;
 import com.hanming.easy.sharding.exception.ShardingException;
 import org.junit.Test;
-
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -55,7 +54,7 @@ public class TableShardingTest {
         stmt.execute(sql);
 
         //执行选择
-        sql = "SELECT * FROM tbl_order";
+        sql = "SELECT * FROM tbl_order where price in (12,101)";
         ResultSet rs = stmt.executeQuery(sql);
 
         // 展开结果集数据库
